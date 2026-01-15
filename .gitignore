@@ -9,6 +9,13 @@ __pycache__/
 venv/
 env/
 
+# Se la venv è stata creata nella root (senza cartella .venv)
+bin/
+lib/
+include/
+pyvenv.cfg
+
+
 # OS / IDE
 .DS_Store
 .idea/
