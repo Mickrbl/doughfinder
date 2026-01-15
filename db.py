@@ -1,26 +1,19 @@
-import psycopg2
-import psycopg2.extras
 import os
-
+import psycopg2
+from urllib.parse import urlparse
 
 def get_db_connection():
-    """
-    Usa DATABASE_URL se presente (Railway/produzione),
-    altrimenti fallback a parametri locali.
-    """
     database_url = os.getenv("DATABASE_URL")
 
-    if database_url:
-        # Railway usa DATABASE_URL tipo:
-        # postgres://user:pass@host:port/dbname
-        # psycopg2 accetta anche "postgres://"
-        return psycopg2.connect(database_url)
+    if not database_url:
+        raise RuntimeError("DATABASE_URL non presente nelle env")
 
-    # fallback locale (se vuoi tenerlo)
-    return psycopg2.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        port=os.getenv("DB_PORT", "5432"),
-        dbname=os.getenv("DB_NAME", "doughfinder"),
-        user=os.getenv("DB_USER", "postgres"),
-        password=os.getenv("DB_PASSWORD", ""),
-    )
+    # DEBUG sicuro: NON stampa la password, solo info utili + lunghezza password
+    try:
+        u = urlparse(database_url)
+        pwd_len = len(u.password) if u.password else 0
+        print(f"DB DEBUG host={u.hostname} port={u.port} db={u.path} user={u.username} pwd_len={pwd_len}")
+    except Exception as e:
+        print("DB DEBUG parse error:", e)
+
+    return psycopg2.connect(database_url)
