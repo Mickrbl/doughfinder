@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block title %} Pagina {% endblock %}
+{% block content %}
+
+<section class="container mx-auto mb-2 col-lg-12 d-flex justify-content-center row">
+
+  <h2 class="d-flex flex-nowrap justify-content-center">
+    {{ rf.titolo }}&nbsp
+    <a class="nav-link" data-bs-toggle="modal" role="button" data-bs-target="#modal_edit_title">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square mb-1 text-secondary" viewBox="0 0 16 16">
+        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+      </svg>
+    </a>
+  </h2>
+
+  <h4 class="text-center fw-light w-100 w-md-75 text-break">
+    {{ rf.descrizione }}
+    <a class="nav-link" data-bs-toggle="modal" role="button" data-bs-target="#modal_edit_description">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square text-secondary" viewBox="0 0 16 16">
+        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+      </svg>
+    </a>
+  </h4>
+
+  <div class="bg-body-tertiary mb-3 mx-auto mt-4 col-lg-auto shadow-sm p-3 mb-5 row flex-column flex-lg-row flex-nowrap">
+
+    <div class="col-12 col-lg-8">
+      <div class="img_div d-flex align-items-center justify-content-center hover_div">
+        <a class="img_edit form-text nav-link fw-bold z-1" data-bs-toggle="modal" role="button" data-bs-target="#modal_edit_image">Modifica</a>
+
+        <!-- ✅ IMMAGINE: compatibile sia URL cloudinary che static -->
+        <img src="{{ rf.img | img_url }}" class="card-img img_card_popolari hover_img minw" alt="Immagine raccolta">
+      </div>
+    </div>
+
+    <div class="col-12 col-lg">
+      <h3 class="sottotitolo edit_text d-flex flex-nowrap">
+        {{ rf.obiettivo }}&nbsp€&nbsp&nbsp
+
+        {% if n_donazioni == 0 %}
+          <a class="nav-link" data-bs-toggle="modal" role="button" data-bs-target="#modal_edit_goal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square mb-1 text-secondary" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+          </a>
+        {% else %}
+          <span class="text-secondary"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Obiettivo bloccato: la raccolta ha già ricevuto donazioni."
+                style="cursor:not-allowed;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square mb-1 text-secondary" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+          </span>
+        {% endif %}
+      </h3>
+
+      <h5 class="mt-2 fw-lighter mb-0 d-flex flex-nowrap">Obiettivo</h5>
+
+      <div class="d-flex flex-nowrap">
+        <div class="row">
+          <h2 class="sottotitolo edit_text">{{ rf.min_donazione }}</h2>
+          <small class="fw-lighter">Minimo donabile</small>
+        </div>
+
+        <div>
+          <h2 class="sottotitolo edit_text d-flex flex-nowrap">
+            {{ rf.max_donazione }}&nbsp&nbsp
+            <a class="nav-link" data-bs-toggle="modal" role="button" data-bs-target="#modal_edit_minmax">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square mb-1 text-secondary" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.120l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+              </svg>
+            </a>
+          </h2>
+          <small class="fw-lighter">Massimo donabile</small>
+        </div>
+      </div>
+
+      {% if rf.tipo == 0 %}
+        <h5 class="sottotitolo edit_text d-flex flex-nowrap">
+          {{ rf.scadenza }}&nbsp&nbsp
+          <a class="nav-link" data-bs-toggle="modal" role="button" data-bs-target="#modal_edit_scadenza">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square text-secondary" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+          </a>
+        </h5>
+        <small class="fw-lighter">Scadenza</small>
+
+        <form action="{{ url_for('edit_tipo', id_rf=rf.id) }}" method="post" class="mt-3">
+          <button id="btn_change_to_lampo" type="submit"
+                  onclick="return confirm('Sei sicuro di voler convertire la raccolta fondi in lampo?')"
+                  {% if current_dt > scadenza_lampo %}disabled{% endif %}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi mb-2 bi-lightning-fill" viewBox="0 0 16 16">
+              <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z"/>
+            </svg>
+            Trasforma in raccolta fondi lampo&nbsp
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle"
+                 viewBox="0 0 16 16" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top"
+                 data-bs-content="È possibile cambiare in raccolta fondi lampo solo nei primi 5 minuti dalla creazione">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+            </svg>
+          </button>
+        </form>
+
+      {% else %}
+        <a class="nav-link mt-3" data-bs-toggle="modal" role="button" data-bs-target="#modal_edit_tipo"
+           onclick="return confirm('Sei sicuro di voler convertire la raccolta fondi normale?')">
+          Prolunga raccolta fondi
+        </a>
+      {% endif %}
+
+      <button id="btn_end_edit" class="col-12 mt-4" type="button">
+        <a href="{{ url_for('rf_singolo', id=rf.id) }}" class="nav-link">Fine modifiche</a>
+      </button>
+    </div>
+  </div>
+
+  <!-- (tutti i modali restano uguali) -->
+
+  <!-- MODAL: TIPO (prolunga) -->
+  <div class="modal fade" id="modal_edit_tipo" tabindex="-1" aria-labelledby="modal_edit_tipo_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_edit_tipo_label">Scegli una nuova scadenza</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{{ url_for('edit_tipo', id_rf=rf.id) }}" method="POST">
+          <div class="modal-body">
+            <div class="mb-3">
+              <input type="datetime-local"
+                     id="input_scadenza_tipo"
+                     name="scadenza"
+                     class="form-control"
+                     required
+                     min="{{ current }}"
+                     max="{{ scadenza_massima }}">
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Cambia tipologia raccolta fondi</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GOAL -->
+  <div class="modal fade" id="modal_edit_goal" tabindex="-1" aria-labelledby="modal_edit_goal_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_edit_goal_label">Cambia obiettivo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{{ url_for('edit_goal', id_rf=rf.id) }}" method="POST">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="input_goal" class="form-label">Nuovo obiettivo (€)</label>
+              <input type="number"
+                     id="input_goal"
+                     name="obiettivo"
+                     class="form-control form-control-lg"
+                     value="{{ rf.obiettivo }}"
+                     min="1"
+                     step="1"
+                     required>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Salva obiettivo</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SCADENZA -->
+  <div class="modal fade" id="modal_edit_scadenza" tabindex="-1" aria-labelledby="modal_edit_scadenza_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_edit_scadenza_label">Cambia scadenza</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{{ url_for('edit_scadenza', id_rf=rf.id) }}" method="POST">
+          <div class="modal-body">
+            <div class="mb-3">
+              <input type="datetime-local"
+                     id="input_scadenza_edit"
+                     name="scadenza"
+                     class="form-control"
+                     required
+                     min="{{ current }}"
+                     max="{{ scadenza_massima }}">
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Cambia scadenza</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MIN/MAX -->
+  <div class="modal fade" id="modal_edit_minmax" tabindex="-1" aria-labelledby="modal_edit_minmax_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_edit_minmax_label">Cambia estremi di donazione</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{{ url_for('edit_minmax', id_rf=rf.id) }}" method="POST">
+          <div class="modal-body">
+            <div class="mb-3 d-flex">
+              <div class="col m-2">
+                <label for="input_min_donazione" class="form-label">Donazione minima</label>
+                <input type="number"
+                       id="input_min_donazione"
+                       name="min_donazione"
+                       class="form-control form-control-lg"
+                       value="{{ rf.min_donazione }}"
+                       required
+                       min="1"
+                       step="1">
+              </div>
+
+              <div class="col m-2">
+                <label for="input_max_donazione" class="form-label">Donazione massima</label>
+                <input type="number"
+                       id="input_max_donazione"
+                       name="max_donazione"
+                       class="form-control form-control-lg"
+                       value="{{ rf.max_donazione }}"
+                       required
+                       min="1"
+                       step="1">
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Cambia estremi</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DESCRIPTION -->
+  <div class="modal fade" id="modal_edit_description" tabindex="-1" aria-labelledby="modal_edit_description_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_edit_description_label">Cambia descrizione</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{{ url_for('edit_description', id_rf=rf.id) }}" method="POST">
+          <div class="modal-body">
+            <div class="mb-3">
+              <textarea id="textarea_description"
+                        name="descrizione"
+                        class="form-control"
+                        required minlength="20" maxlength="270" rows="3">{{ rf.descrizione }}</textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Cambia descrizione</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TITLE -->
+  <div class="modal fade" id="modal_edit_title" tabindex="-1" aria-labelledby="modal_edit_title_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_edit_title_label">Cambia titolo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{{ url_for('edit_title', id_rf=rf.id) }}" method="POST">
+          <div class="modal-body">
+            <div class="mb-3">
+              <input type="text"
+                     id="input_title"
+                     name="titolo"
+                     class="form-control form-control-lg"
+                     value="{{ rf.titolo }}"
+                     required>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Cambia titolo</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: IMAGE -->
+  <div class="modal fade" id="modal_edit_image" tabindex="-1" aria-labelledby="modal_edit_image_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_edit_image_label">Cambia immagine</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="{{ url_for('new_img', id_rf=rf.id) }}" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="mb-3 col-8">
+              <label for="input_image_file" class="form-label">Carica foto</label>
+              <input type="file"
+                     id="input_image_file"
+                     name="img"
+                     class="form-control"
+                     accept=".jpg, .jpeg, .png"
+                     required>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Salva immagine</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

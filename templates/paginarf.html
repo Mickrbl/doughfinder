@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% block title %} Pagina {% endblock %}
+{% block content %}
+
+<section class="container mx-auto px-1 px-sm-1 mb-2 col-lg-12 d-flex justify-content-center row">
+
+  <div class="d-flex justify-content-around w-100">
+    {% if current_user.is_authenticated and (current_user.id == rf.id_utente or rf.stato == 1) %}
+      <span class="col">&nbsp</span>
+    {% endif %}
+
+    <h2 class="text-center fw-bold col mb-0">{{ rf.titolo }}</h2>
+
+    {% if rf.stato == 1 %}
+      <span class="col">&nbsp</span>
+    {% endif %}
+
+    {% if current_user.is_authenticated and current_user.id == rf.id_utente and rf.stato == 0 %}
+      <div class="col text-end">
+        <a class="nav-link d-inline-flex align-items-center justify-content-end" href="{{ url_for('edit_rf', id_rf=rf.id) }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+               class="bi bi-pencil-square mb-1 text-secondary" viewBox="0 0 16 16">
+            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+          </svg>
+          <span class="ms-1">modifica</span>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- descrizione: w-100 sempre, ma su schermi >= md restringo con mx-auto e col-md-10/col-lg-8 -->
+  <h4 class="text-center fw-light text-break w-100 mx-auto col-md-10 col-lg-8 mt-3">
+    {{ rf.descrizione }}
+  </h4>
+
+  <div class="bg-body-tertiary d-flex mx-auto mt-4 col-lg-auto shadow-sm p-3 mb-5 row flex-nowrap flex-column flex-sm-row">
+
+    <!-- ✅ IMMAGINE: ora compatibile sia con Cloudinary (URL) sia con static/ -->
+    <img src="{{ rf.img | img_url }}"
+         class="col-12 col-sm-8 img_card_popolari"
+         alt="Immagine raccolta fondi">
+
+    <div class="col mt-3 mt-sm-0">
+
+      <div class="progress" role="progressbar" aria-valuenow="{{ percentuale_rf }}" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: {{ percentuale_rf }}%"></div>
+      </div>
+
+      <small class="fw-lighter percentuale_finanziamento">{{ percentuale_rf }}% finanziato</small>
+      <h2 class="sottotitolo">{{ totale }}€</h2>
+      <small class="fw-lighter">raccolti a fronte dell'obiettivo di {{ rf.obiettivo }} €</small>
+
+      <h2 class="sottotitolo pointers"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar">
+        {{ numero_donazioni }}
+      </h2>
+
+      <small class="fw-lighter"
+             role="button"
+             data-bs-toggle="offcanvas"
+             data-bs-target="#offcanvasNavbar"
+             aria-controls="offcanvasNavbar">
+        donazioni
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-card-list icon_like" viewBox="0 0 16 16">
+          <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
+          <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+        </svg>
+      </small>
+
+      <h2 class="sottotitolo">{{ valore }}</h2>
+
+      {% if rf.stato == 0 %}
+        <small class="fw-lighter">{{ tipo_tempo }} alla fine</small>
+      {% else %}
+        <small class="fw-lighter">Raccolta fondi chiusa</small>
+      {% endif %}
+
+      <button id="{% if rf.stato == 0 %}button_donazione{% else %}button_donazione_disabled{% endif %}"
+              class="col-12 mt-3"
+              data-bs-toggle="modal"
+              data-bs-target="#donazione"
+              {% if rf.stato == 1 %}disabled{% endif %}>
+        Sostieni il sogno di {{ rf.username }}
+      </button>
+
+      <small class="fw-lighter text-center d-block">A 50 persone interessa questa raccolta fondi</small>
+    </div>
+
+    <!-- OFFCANVAS DONATORI -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header border-bottom m-3">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Donatori</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+
+      <ul class="navbar-nav donazioni">
+        {% for donazione in donazioni %}
+          {% if donazione.id_rf == rf.id %}
+            <li class="nav-item">
+              <div class="card-body">
+                <h5 class="card-text mb-3 fw-bold">
+                  {% if donazione.anonimo == 0 %}
+                    {{ donazione.nome }} {{ donazione.cognome }}
+                  {% else %}
+                    Anonimo
+                  {% endif %}
+                  <small class="fw-normal"> ha donato:</small>
+                </h5>
+
+                <div class="d-flex justify-content-between align-items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                       class="bi bi-cash-coin icon_like text-success" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                    <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/>
+                    <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
+                    <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
+                  </svg>
+
+                  <h3 class="card-title text-success fw-bold m-0">{{ donazione.donazione }} €</h3>
+                </div>
+              </div>
+              <hr>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- MODAL DONAZIONE -->
+    <div class="modal fade" id="donazione" tabindex="-1" aria-labelledby="donazioneLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="donazioneLabel">Donazione</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body container">
+            <form class="container" action="{{ url_for('new_donazione', id_rf=rf.id) }}" method="post">
+
+              <div class="mb-3 col">
+                <label for="donazione_importo" class="form-label">Entità donazione</label>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">€</span>
+                  <input type="number"
+                         id="donazione_importo"
+                         name="donazione"
+                         class="form-control form-control-lg"
+                         placeholder="Min {{ rf.min_donazione }} € - Max {{ rf.max_donazione }} €"
+                         required
+                         min="{{ rf.min_donazione }}"
+                         max="{{ rf.max_donazione }}">
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="mb-3 col">
+                <label for="cc_num" class="form-label">Carta di credito</label>
+                <input type="text" class="form-control form-control-lg" id="cc_num" name="cartacredito"
+                       placeholder="1234 5678 9012 3456" required pattern="([0-9]{4}\s?){4}">
+              </div>
+
+              <div class="mb-3 row">
+                <div class="mb-3 col">
+                  <label for="cc_exp" class="form-label">Data scadenza</label>
+                  <input type="text" class="form-control form-control-sm" id="cc_exp" name="scadenza_carta"
+                         placeholder="MM-YYYY" required pattern="(0[1-9]|1[0-2])-\d{4}$">
+                </div>
+
+                <div class="mb-3 col">
+                  <label for="cc_cvv" class="form-label">CVV/CVC</label>
+                  <input type="text" class="form-control form-control-sm" id="cc_cvv" name="cvv"
+                         placeholder="CVV/CVC" required pattern="\d{3}">
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="mb-3 row">
+                <div class="col">
+                  <label for="nome" class="form-label">Nome</label>
+                  <input type="text" class="form-control" id="nome" name="nome"
+                         placeholder="Inserisci il tuo nome" required minlength="1" maxlength="30">
+                </div>
+                <div class="col">
+                  <label for="cognome" class="form-label">Cognome</label>
+                  <input type="text" class="form-control" id="cognome" name="cognome"
+                         placeholder="Inserisci il tuo cognome" required minlength="1" maxlength="30">
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <div class="mb-3 col">
+                  <label for="indirizzo" class="form-label">Indirizzo</label>
+                  <input type="text" class="form-control" id="indirizzo" name="indirizzo"
+                         placeholder="Via Politecnico 30" required>
+                </div>
+                <div class="mb-3 col">
+                  <label for="citta" class="form-label">Città</label>
+                  <input type="text" class="form-control" id="citta" name="città"
+                         placeholder="es. Roma, Torino" required>
+                </div>
+                <div class="mb-3 col">
+                  <label for="cap" class="form-label">CAP</label>
+                  <input type="text" class="form-control" id="cap" name="cap"
+                         placeholder="10100" required pattern="\d{5}">
+                </div>
+              </div>
+
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" value="1" type="checkbox" role="switch" id="anonimo" name="anonimo">
+                <label class="form-check-label" for="anonimo">Anonimo</label>
+              </div>
+
+              <div class="text-end">
+                <button type="submit" class="btn btn-primary btn-lg">Dona</button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

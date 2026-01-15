@@ -1,0 +1,375 @@
+body {
+    font-family:'Ubuntu', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+#change_lampo{
+    padding: 0;
+    border: none;
+    background: none;
+}
+#navb {
+  position: sticky;
+  top: 0;
+}
+#navb1 {
+  position: sticky;
+  top: 0%; /* da testare, se non va togliere zindex e mettere 10% */
+  z-index: 1000;
+}
+
+#portafoglio {
+    color: #3A7734;
+    font-size: small;
+    text-align: start;
+
+}
+
+.tasto_avvia {
+    background-color: #11557C;
+    color: white;
+    border-radius: 50px;
+    align-items: center;
+
+}
+#form_raccoltafondi {
+
+}
+
+#step2_form {
+    margin-top: 40em;
+    margin-bottom: 10em;
+}
+
+#footer {
+    margin-top:auto;
+}
+
+
+.fewlines{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4; /* Mostra solo 3 righe */
+    overflow: hidden;
+    width: 100%;
+}
+
+
+.center-l {
+    text-align: center;
+    margin-left: 2em;
+}
+.typerf {
+    border-bottom: grey;
+}
+.space {
+    margin-right: 25em;
+}
+
+.post {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+.post_small {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: 20/3;
+    overflow: hidden;
+}
+
+
+.margine-e {
+    margin-right: 7em;
+}
+
+
+.img_card {
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+}
+.img_card_archivio {
+    width: 100%;
+    height: 15rem;
+    object-fit: cover;
+}
+.img_card_popolari {
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.logo {
+    height: 2.5em;
+    margin: 1em;
+}
+.logo2 {
+    height: 30%;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+.text-description {
+    font-weight: normal;
+    text-align: justify;
+}
+
+.no-b {
+    margin-bottom: -6px;
+}
+
+.text-name_post {
+    font-weight: lighter;
+}
+.img_div {
+  position: relative;
+  display: inline;
+}
+.lampo_tag {
+  position: absolute;
+  top: 0.7em;
+  left: 0em;
+  background-color: firebrick;
+  border-radius: 5px;
+  color: white;
+  font-weight: normal;
+  text-shadow: 2px 2px 2px #000000;
+  box-shadow: 2px 2px 2px #484747;
+}
+.lampo_tag_fire {
+  position: absolute;
+  top: 2.5em;
+  left: 0em;
+  background-color: firebrick;
+  border-radius: 5px;
+  color: white;
+  font-weight: normal;
+  text-shadow: 2px 2px 2px #000000;
+  box-shadow: 2px 2px 2px #484747;
+}
+
+.lampo_tag_fire2 {
+  position: absolute;
+  top: 0.8em;
+  left: 0em;
+  background-color: firebrick;
+  border-radius: 5px;
+  color: white;
+  font-weight: normal;
+  text-shadow: 2px 2px 2px #000000;
+  box-shadow: 2px 2px 2px #484747;
+}
+
+.lampo_tag_pop {
+  position: absolute;
+  bottom: 0em;
+  right: 0em;
+  background-color: firebrick;
+  border-radius: 5px;
+  color: white;
+  font-weight: normal;
+  text-shadow: 2px 2px 2px #000000;
+  box-shadow: 2px 2px 2px #484747;
+}
+
+.icons {
+    vertical-align: text-top;
+    filter: drop-shadow(2px 4px 3px rgb(0 0 0));
+}
+.icon_like {
+    vertical-align: text-top;
+}
+
+.edit_text{
+    color: seagreen;
+}
+
+.i_icon {
+    vertical-align: baseline;
+    color: grey;
+}
+
+.like_btn {
+      position: absolute;
+      top: 0.2em;
+      right: 1em;
+      background-color: ghostwhite;
+      border-radius: 7px;
+      color: grey;
+      font-weight: normal;
+}
+
+.titolo_pop {
+      position: absolute;
+      bottom: 0.2em;
+      right: 1em;
+      background-color: white;
+      opacity: 70%;
+      color: grey;
+      font-weight: normal;
+}
+
+.titolo_pop_chiuse {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      background-color: white;
+      opacity: 70%;
+      color: grey;
+      font-weight: normal;
+}
+.hover_div {
+    opacity: 90%;
+    background: black;
+    border-radius: 20px;
+}
+.hover_img{
+    border-radius: 20px;
+}
+
+.hover_div:hover img {
+    opacity: 0.5;
+    transition: .3s ease;
+
+}
+.hover_div:hover {
+    border-radius: 20px;
+}
+.hover_div:hover a {
+    opacity: 100;
+    color: white;
+    transition: .5s ease;
+}
+
+.img_edit {
+      position: absolute;
+      opacity: 50%;
+      color: black;
+      font-weight: normal;
+}
+
+
+.scroll-margin-top {
+     scroll-margin-top: -2em;
+     overflow: initial !important;
+}
+
+.text-banner {
+    color: #476d76;
+}
+
+.progress{
+    border-radius: 0 !important;
+    height: 0.5em;
+}
+.progress-bar{
+    background-color: #009e74;
+}
+
+.sottotitolo {
+    margin-top: 1rem;
+    margin-bottom: -0.5rem;
+
+}
+.percentuale_finanziamento {
+    color: #009e74;
+}
+
+#button_donazione {
+    border-radius: 0 !important;
+    background-color: #009e74;
+    border: none;
+    color: white;
+    height: 3em;
+}
+.button_donazione:hover {
+    background-color: cadetblue; !important;
+}
+
+#button_donazione_disabled {
+    border-radius: 0 !important;
+    background-color: darkgray;
+    border: none;
+    color: white;
+    height: 3em;
+}
+
+.pointers {
+    cursor: pointer;
+}
+
+
+.donazioni {
+    overflow-y: scroll;
+}
+
+#modifica {
+    font-size: xxx-large;
+}
+
+
+.horizontal-card{
+  height: 200px;
+  background: white;
+  position:relative;
+  margin:1em 0em 1em 0em;
+}
+.horizontal-card-image{
+ height:200px;
+  width: 200px;
+  float:left;
+  background: pink;
+  margin-right: 1em;
+}
+
+.horizontal-card-details{
+  width: 100%;
+  padding:1em;
+}
+
+.hover_successi{
+    opacity: 100%;
+    background: black;
+}
+
+.hover_successi:hover img {
+    opacity: 0.5;
+    transition: .3s ease;
+}
+
+.hover_successi:hover h3{
+    opacity: 80%;
+    transition: .3s ease;
+    color: black;
+    z-index: 1;
+}
+
+.titolo_mp {
+    opacity: 0%;
+    color: white;
+    font-weight: normal;
+    background-color: black;
+}
+
+.tit_chiuso {
+    background-color: black;
+    opacity: 60%;
+    text-align: center;
+
+}
+
+
+.hover_successi:hover .tit_chiuso{
+    background-color: transparent;
+    transition: .3s ease;
+    color: white;
+    opacity: 90%;
+    z-index: 3;
+    text-align: start;
+}

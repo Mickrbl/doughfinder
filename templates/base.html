@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dough Finder| {% block title %} {% endblock %}</title>
+    <link rel="icon" href="{{url_for('static', filename='logo2.png')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}"> <!--npm install bootstrap-icons-->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu">
+</head>
+
+<body>
+    <header id="navb" class="z-3 mt-1">
+        <nav class="navbar border-bottom bg-white">
+            <div class="container-fluid d-lg-none">
+                <img id="" class="logo" onclick="window.location='{{url_for('index')}}'" src="{{url_for('static', filename='logo3.png')}}" alt="...">
+                <div class="d-flex align-items-center justify-content-between">
+
+                    <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#menuMobile">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="menuMobile">
+                    <div class="d-flex flex-column align-items-center ">
+
+                        <a href="{{ url_for('archivio') }}" class="nav-link">Archivio</a>
+
+                        {% if current_user.is_authenticated %}
+                        <div class="nav-item dropdown col me-1">
+                            <a class="nickname nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{current_user.username}}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ url_for('myprofile', username=current_user.username) }}">Il mio profilo</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('settings') }}">Gestione account</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Esci</a></li>
+                            </ul>
+                        </div>
+                        <a href="#" class="tasto_avvia nav-link p-1" data-bs-toggle="modal" data-bs-target="#avviaraccolta">
+                            Avvia Campagna
+                        </a>
+                        {% else %}
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#accedi">Accedi</a>
+                        <a class="nav-link" href="{{ url_for('iscriviti') }}">Iscriviti</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+
+          <div class="container-fluid d-flex justify-content-evenly d-none d-lg-flex">
+                <a href="{{ url_for('archivio') }}" class="ms-3 nav-link"> Archivio </a>
+
+                {% if current_user.is_authenticated %}&nbsp{% endif %}
+              <img id="logo" class="logo" onclick="window.location='{{url_for('index')}}'" src="{{url_for('static', filename='logo3.png')}}" alt="...">
+              <div class="d-flex flex-nowrap align-items-center">
+                   {% if current_user.is_authenticated %}
+
+                    <div class="nav-item dropdown col me-1">
+                          <a id='nickname' class="nickname nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{current_user.username}}
+                          </a>{% block portafogli %}{% endblock %}
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('myprofile', username = current_user.username) }}">Il mio profilo</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('settings') }}">Gestione account</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Esci</a></li>
+                          </ul>
+                    </div>
+                    <a id="tasto_avvia" href="#" class="tasto_avvia nav-link ms-3 p-1" data-bs-toggle="modal" data-bs-target="#avviaraccolta">&nbsp&nbsp Avvia Campagna &nbsp&nbsp</a>
+                  {% else %}
+                  <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#accedi"> Accedi </a>
+                  <a class=" nav-link ms-3" href="{{ url_for('iscriviti') }}">Iscriviti</a> {% endif %}
+              </div>
+          </div>
+        </nav>
+    </header>
+    {% block typerf %}{% endblock %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+    <div class="modal fade" id="accedi" tabindex="-1" aria-labelledby="passwordLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header text-center">
+                        <h1 class="modal-title fs-5  mx-auto " id="exampleModalLabel1">Accedi</h1>
+                      </div>
+                        <div class="center-l">
+                            <img id="" class="logo2" alt="#" src="{{url_for('static', filename='logo2.png')}}">
+                        </div>
+
+
+                        <form class="mx-auto mb-5" action="/login" method="POST">
+                          <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" name="email"> <!--is-invalid-->
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                          </div>
+                          <div class="mb-3 ">
+                            <label for="passwordInput" class="form-label">Password</label>
+                            <input type="password" class="  form-control" id="passwordInput" name="password">
+                          </div>
+                            <div class="d-flex justify-content-center mb-3">
+                                <button type="submit" class="btn btn-primary mt-3 ">Accedi</button>
+                            </div>
+                            <small class=" text-center center-l my-3">Non hai ancora un account? <a href="/iscriviti">Registrati</a></small>
+                        </form>
+
+
+                    </div>
+                  </div>
+    </div>
+
+
+
+
+
+    <div class="modal fade" id="avviaraccolta" tabindex="-1" aria-labelledby="avviaraccolta" aria-hidden="true">
+                  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header text-center">
+                        <h1 class="modal-title fs-5  mx-auto " id="exampleModalLabel">Avvia la campagna</h1>
+                      </div>
+                        <div class="center-l">
+                            <img id="logo2" class="logo2" alt="#" src="{{url_for('static', filename='logo2.png')}}">
+                        </div>
+
+                        <div class="mx-auto mb-5 modal-body overflow-hidden">
+                            <form class="form_raccoltafondi" action="{{ url_for('new_rf') }}" method="post" enctype="multipart/form-data" >
+                              <h2 id="step1">Step 1: Parlaci del tuo progetto</h2>
+                              <div class="mb-3">
+                                  <label for="titolo" class="form-label">Titolo</label>
+                                  <input type="text" class="form-control scroll-margin-top" id="titolo" aria-describedby="emailHelp" name="titolo" placeholder="Dai un nome al tuo sogno..." required minlength="1" maxlength="30"> <!--is-invalid-->
+                              </div>
+                              <div class="mb-3 ">
+                                  <label id="descrizione-label" for="descriziones" class="form-label">Descrizione</label>
+                                  <textarea id="descriziones" name="descrizione" class="form-control scroll-margin-top" required minlength="20" maxlength="270" placeholder="Descrivi brevemente il tuo progetto"></textarea>
+                              </div>
+                              <div class="mb-3">
+                                   <label for="foto" class="form-label col">Inserisci foto rappresentativa</label>
+                                   <input type="file" id="foto" name="foto" aria-describedby="emailHelp" class="form-control" accept=".jpg, .jpeg, .png">
+                              </div>
+                              <a type="button" class="btn btn-primary mt-3 float-end"  href="#step2"> Avanti </a>
+                              <div id="step2_form">
+                                  <h2 id="step2">Step 2: Quanto hai bisogno?</h2>
+                                  <div class="mb-3">
+                                      <label for="obiettivo" class="form-label">Obiettivo</label>
+                                      <input type="number"
+                                             class="form-control"
+                                             id="obiettivo"
+                                             name="obiettivo"
+                                             required
+                                             min="1"
+                                             step="1">
+                                  </div>
+                                  <div class="row">
+                                          <div class="mb-3 col">
+                                              <label for="min_donazione" class="form-label">Donazione minima</label>
+                                              <input type="number"
+                                                     class="form-control"
+                                                     id="min_donazione"
+                                                     name="min_donazione"
+                                                     required
+                                                     min="1"
+                                                     step="1">
+                                          </div>
+                                          <div class="mb-3 col">
+                                               <label for="max_donazione" class="form-label">Donazione massima</label>
+                                               <input type="number"
+                                                      class="form-control"
+                                                      id="max_donazione"
+                                                      name="max_donazione"
+                                                      required
+                                                      min="1"
+                                                      step="1">
+                                          </div>
+                                  </div>
+                                  <div class="mb-3">
+                                           <label for="scadenza" class="form-label" >Quando vuoi chiudere la raccolta?</label>
+                                           <input type="datetime-local" id="scadenza" name="scadenza" aria-describedby="emailHelp" class="form-control" required min="{{current}}" max="{{ scadenza_massima }}">
+                                  </div>
+
+                                  <div class="form-check form-switch">
+                                      <input class="form-check-input" value="1" type="checkbox" role="switch" id="tipo" name="tipo" onchange="toggleDataInput()">
+                                      <label class="form-check-label" for="tipo">Raccolta lampo</label>
+                                  </div>
+
+                                  <script>
+                                        function toggleDataInput() {
+                                            var dataInput = document.getElementById('scadenza');
+                                            var tipoCheckbox = document.getElementById('tipo');
+
+                                            if (tipoCheckbox.checked) {
+                                                dataInput.disabled = true;
+                                            } else {
+                                                dataInput.disabled = false;
+                                            }
+                                        }
+                                 </script>
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <a type="button" class="btn btn-primary mt-3 float-end"  href="#step1"> Indietro</a>
+                                        <button type="submit" class="btn btn-primary mt-3 ">Avvia Raccolta fondi</button>
+                                    </div>
+                             </div>
+                            </form>
+                    </div>
+
+
+                    </div>
+                  </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="container-fluid mt-4 flex-grow-1">
+            {% block content %}{% endblock %}
+    </div>
+
+
+
+
+
+    <footer id="footer" class="container-fluid mt-5">
+      <hr/>
+      <p class="mt-3 text-body-secondary"> © 2026 Mickol Roe Baronia Lasquety </p>
+
+    </footer>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script>
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      })
+    </script>
+
+
+
+</body>
+
+</html>

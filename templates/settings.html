@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %} I tuoi dati  {% endblock %}
+{% block content %}
+
+<div>
+
+    <h5 class="text-center">I tuoi dati</h5>
+    <fieldset >
+        <div class="container">
+            <div class=" mx-auto w-75" >
+                <div class="card-body row">
+                    <div class="col">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" id="nome" class="form-control" placeholder="{{ current_user.nome }}" disabled>
+                    </div>
+                    <div class="col">
+                        <label for="cognome" class="form-label">Cognome</label>
+                        <input type="text" id="cognome" class="form-control" placeholder="{{ current_user.cognome }}" disabled>
+                    </div>
+                    <div class="col">
+                        <label for="cognome" class="form-label">Data di nascita</label>
+                        <input type="text" id="cognome" class="form-control" placeholder="{{ current_user.data_nascita }}" disabled>
+                    </div>
+                </div>
+
+                <div class="card-body mb-3 row">
+                    <div class="col">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" id="email" class="form-control" placeholder="{{ current_user.email }}" disabled>
+                    </div>
+                    <div class="col">
+                        <label for="cognome" class="form-label">Username</label>
+                        <input type="text" id="cognome" class="form-control" placeholder="{{ current_user.username }}" disabled>
+                    </div>
+                    <div class="col">
+                        <label for="cognome" class="form-label">Password</label>
+                        <input type="text" id="cognome" class="form-control" placeholder="*********" disabled>
+                        <a href="#" class="form-text" data-bs-toggle="modal" data-bs-target="#password"> Modifica password </a>
+                    </div>
+
+                </div>
+
+                <div class="modal fade" id="password" tabindex="-1" aria-labelledby="passwordLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cambia password</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+
+                     <form action="{{ url_for('new_password') }}" method="post">
+                          <div class="modal-body">
+                               <div class="col mb-3">
+                                    <label for="vecchia_password" class="form-label">La vecchia password</label>
+                                    <input type="password" id="vecchia_password" name="vecchia_password" class="form-control" placeholder="La vecchia password">
+                                </div>
+                                <div class="col mb-3">
+                                    <label for="nuova_password" class="form-label">La nuova password</label>
+                                    <input type="password" id="nuova_password" name="nuova_password" class="form-control" placeholder="La nuova password">
+                                </div>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                             <button type="submit" class="btn btn-primary">Cambia password</button>
+                          </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-body row">
+                        <div class="col">
+                            <label for="nome" class="form-label">Portafoglio</label>
+                            <input type="text" id="nome" class="form-control" placeholder="{{ current_user.portafoglio }}" disabled>
+                        </div>
+                </div>
+
+
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+
+
+{% endblock %}
