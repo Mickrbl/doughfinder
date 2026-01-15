@@ -1,9 +1,10 @@
 import os
-import psycopg2
 
-def get_db_connection():
-    database_url = os.getenv("DATABASE_URL")
-    if not database_url:
-        raise RuntimeError("DATABASE_URL non impostata")
+database_url = os.environ.get("DATABASE_URL")
 
-    return psycopg2.connect(database_url, sslmode="require")
+# Correzione comune per compatibilità
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+# Poi la usi nel connect
+return psycopg2.connect(database_url, sslmode="require")
