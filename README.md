@@ -32,23 +32,23 @@ All credentials are managed through environment variables.
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/doughfinder.git
-   cd doughfinder
+   cd doughfinder```
    
 2. Create a virtual environment:
-   python -m venv venv
+   ```python -m venv venv
    source venv/bin/activate  # macOS/Linux
-   venv\Scripts\activate     # Windows
+   venv\Scripts\activate     # Windows```
    
 3. Install dependencies:
-   pip install -r requirements.txt
+   ```pip install -r requirements.txt```
 
 4. Set environment variables:
-   DATABASE_URL
+   ```DATABASE_URL
    SECRET_KEY
-   CLOUDINARY_URL
+   CLOUDINARY_URL```
    
 5. Run the application:
-   python app.py
+   ```python app.py```
 
 
 **Deployment**
